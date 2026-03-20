@@ -3,11 +3,11 @@ ADD ./steamos /
 ADD ./steamos/usr/share/factory /
 COPY ./packagelists /tmp/packagelists
 
-RUN pacman -Qq | sort -u > /tmp/installed-packages.txt \
+RUN pacman -Qeq | sort -u > /tmp/explicit-packages.txt \
  && printf '%s\n' libcroco holo-desync holo-keyring holo-pacman holo-pipewire holo-sudo holo-wireplumber elfutils | sort -u > /tmp/keep-packages.txt \
  && cat /tmp/packagelists/arch.txt /tmp/keep-packages.txt | sort -u > /tmp/base-packages.txt \
- && comm -23 /tmp/installed-packages.txt /tmp/base-packages.txt > /tmp/remove-installed.txt \
- && if [ -s /tmp/remove-installed.txt ]; then xargs pacman -R --noconfirm -- < /tmp/remove-installed.txt; fi \
+ && comm -23 /tmp/explicit-packages.txt /tmp/base-packages.txt > /tmp/remove-packages.txt \
+ && if [ -s /tmp/remove-packages.txt ]; then xargs pacman -Rns --noconfirm -- < /tmp/remove-packages.txt; fi \
  && sed -r -i 's/\[(jupiter|core|extra|community|multilib|holo)\]/\[\1-rel\]/g' /etc/pacman.conf \
  && pacman-key --init \
  && pacman-key --populate archlinux \
