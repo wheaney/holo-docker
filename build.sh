@@ -1,8 +1,6 @@
 #!/bin/bash
 set -e
 
-STEAMOS_CHANNEL="${1:-steamdeck}"
-
 LOOP=$(losetup --find --partscan --show ./steamos_image/disk.img)
 mkdir -p ./steamos
 mount ${LOOP}p3 ./steamos
@@ -12,6 +10,6 @@ unmountimg() {
 }
 trap unmountimg ERR
 
-docker build --build-arg STEAMOS_CHANNEL="$STEAMOS_CHANNEL" -t holo-base:ci-build .
+docker build -t holo-base:ci-build .
 
 unmountimg
