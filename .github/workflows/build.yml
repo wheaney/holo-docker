@@ -70,21 +70,21 @@ jobs:
         version_prefix="${{ matrix.version_prefix }}"
         version_tags="${version_prefix}${{ steps.download.outputs.BUILD_ID }} ${version_prefix}${{ steps.download.outputs.FULL_VERSION }} ${version_prefix}${{ steps.download.outputs.MAJOR_VERSION }} ${version_prefix}${{ steps.download.outputs.MINOR_VERSION }}"
 
-        docker tag holo-base:ci-build ghcr.io/wheaney/holo-base:$channel_tag
-        docker tag holo-toolchain-rust:ci-build ghcr.io/wheaney/holo-toolchain-rust:$channel_tag
-        docker tag holo-toolchain-go:ci-build ghcr.io/wheaney/holo-toolchain-go:$channel_tag
+        docker tag holo-base:ci-build ghcr.io/steamdeckhomebrew/holo-base:$channel_tag
+        docker tag holo-toolchain-rust:ci-build ghcr.io/steamdeckhomebrew/holo-toolchain-rust:$channel_tag
+        docker tag holo-toolchain-go:ci-build ghcr.io/steamdeckhomebrew/holo-toolchain-go:$channel_tag
 
         for version_tag in $version_tags
         do
-          docker tag holo-base:ci-build ghcr.io/wheaney/holo-base:$version_tag
-          docker tag holo-toolchain-rust:ci-build ghcr.io/wheaney/holo-toolchain-rust:$version_tag
-          docker tag holo-toolchain-go:ci-build ghcr.io/wheaney/holo-toolchain-go:$version_tag
+          docker tag holo-base:ci-build ghcr.io/steamdeckhomebrew/holo-base:$version_tag
+          docker tag holo-toolchain-rust:ci-build ghcr.io/steamdeckhomebrew/holo-toolchain-rust:$version_tag
+          docker tag holo-toolchain-go:ci-build ghcr.io/steamdeckhomebrew/holo-toolchain-go:$version_tag
         done
 
         if [ -n "${{ matrix.latest_tag }}" ]; then
-          docker tag holo-base:ci-build ghcr.io/wheaney/holo-base:${{ matrix.latest_tag }}
-          docker tag holo-toolchain-rust:ci-build ghcr.io/wheaney/holo-toolchain-rust:${{ matrix.latest_tag }}
-          docker tag holo-toolchain-go:ci-build ghcr.io/wheaney/holo-toolchain-go:${{ matrix.latest_tag }}
+          docker tag holo-base:ci-build ghcr.io/steamdeckhomebrew/holo-base:${{ matrix.latest_tag }}
+          docker tag holo-toolchain-rust:ci-build ghcr.io/steamdeckhomebrew/holo-toolchain-rust:${{ matrix.latest_tag }}
+          docker tag holo-toolchain-go:ci-build ghcr.io/steamdeckhomebrew/holo-toolchain-go:${{ matrix.latest_tag }}
         fi
 
     - name: Wait for other runs to complete
@@ -93,13 +93,13 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Push Base image
-      run: docker push --all-tags ghcr.io/wheaney/holo-base
+      run: docker push --all-tags ghcr.io/steamdeckhomebrew/holo-base
 
     - name: Push Rust toolchain image
-      run: docker push --all-tags ghcr.io/wheaney/holo-toolchain-rust
+      run: docker push --all-tags ghcr.io/steamdeckhomebrew/holo-toolchain-rust
 
     - name: Push Go toolchain image
-      run: docker push --all-tags ghcr.io/wheaney/holo-toolchain-go
+      run: docker push --all-tags ghcr.io/steamdeckhomebrew/holo-toolchain-go
 
     - name: Log out of GitHub Container Registry
       run: |
